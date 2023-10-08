@@ -1,11 +1,13 @@
 <script setup>
     import { ref } from 'vue'
     import { zShape } from './game-components/z-shape';
+    import { tShape } from './game-components/t-shape';
 
     const gameHeight = 25; 
     const gameWidth = 20;
     let gameCurrentRow = ref(-1);
     let gameCurrentColumn = ref(5);
+    let currentShapeColour = ref('');
 
     function createEmptyRow(){
         let row = [];
@@ -25,10 +27,14 @@
         return board;
     }
 
-    let component = zShape();
+    let gameShapes = [zShape(), tShape()];
+    let component = gameShapes[1];
+    currentShapeColour.value = component.colour;
     let currentGameShape = component.currentShape;
 
     function moveDown(){
+        //if we are back at the top, get a random shape
+
         console.table(gameBoard.value)
         gameCurrentRow.value++;
 
@@ -72,7 +78,9 @@
         <!-- Shape -->
         <div class="board">
             <div v-for="(row, indexRow) in currentGameShape" :key="indexRow" class="row">
-                <div v-for="(column, indexColumn) in row" :key="indexColumn" class="column" :class="{'column--colour' : (column === 1)}">
+                <div v-for="(column, indexColumn) in row" :key="indexColumn" class="column" 
+                :style="[(column === 1) ? { backgroundColor : currentShapeColour } : { backgroundColor : 'white' }]"
+                :class="{'column--colour' : (column === 1)}">
                 </div>
             </div>
         </div>
@@ -88,7 +96,8 @@
         <!-- Board -->
         <div class="board">
             <div v-for="(row, indexRow) in gameBoard" :key="indexRow" class="row">
-                <div v-for="(column, indexColumn) in row" :key="indexColumn" class="column" :class="{'column--colour' : (column === 1)}">
+                <div v-for="(column, indexColumn) in row" :key="indexColumn" class="column" 
+                :class="{'column--colour' : (column === 1)}">
                 </div>
             </div>
         </div>
@@ -118,7 +127,6 @@
 }
 
 .column--colour{
-    background-color: red;
     box-shadow: inset 0 0 3px 2px rgba(0, 0, 0, 0.5);
 }
 .controls{

@@ -1,6 +1,8 @@
 import {ref, reactive } from 'vue'
 
 export function zShape() {
+    const colour = 'blue'; 
+
     const shape = reactive({
         'top' : [
             [0,1,1],
@@ -36,5 +38,5 @@ export function zShape() {
     }
     
     
-    return { currentShape, turnRight, turnLeft }
+    return { currentShape, colour, turnRight, turnLeft }
 }
