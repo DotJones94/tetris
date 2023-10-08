@@ -2,6 +2,7 @@
     import { ref } from 'vue'
     import { zShape } from './game-components/z-shape';
     import { tShape } from './game-components/t-shape';
+    import { lShape } from './game-components/l-shape';
 
     const gameHeight = 25; 
     const gameWidth = 20;
@@ -27,8 +28,8 @@
         return board;
     }
 
-    let gameShapes = [zShape(), tShape()];
-    let component = gameShapes[1];
+    let gameShapes = [zShape(), tShape(), lShape()];
+    let component = gameShapes[2];
     currentShapeColour.value = component.colour;
     let currentGameShape = component.currentShape;
 
