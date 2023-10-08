@@ -5,6 +5,7 @@
     import { lShape } from './game-components/l-shape';
     import { oShape } from './game-components/o-shape';
     import { sShape } from './game-components/s-shape';
+    import { iShape } from './game-components/i-shape';
 
     const gameHeight = 25; 
     const gameWidth = 20;
@@ -30,8 +31,8 @@
         return board;
     }
 
-    let gameShapes = [zShape(), tShape(), lShape(), oShape(), sShape()];
-    let component = gameShapes[0];
+    let gameShapes = [zShape(), tShape(), lShape(), oShape(), sShape(), iShape()];
+    let component = gameShapes[5];
     currentShapeColour.value = component.colour;
     let currentGameShape = component.currentShape;
 
