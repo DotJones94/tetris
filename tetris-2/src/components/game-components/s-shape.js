@@ -1,27 +1,27 @@
 import {ref, reactive } from 'vue'
 
-export function zShape() {
+export function sShape() {
     const colour = 'blue'; 
 
     const shape = reactive({
         'top' : [
-            [0,1,1],
             [1,1,0],
+            [0,1,1],
             [0,0,0],
         ],
         'right' : [
             [0,1,0],
-            [0,1,1],
-            [0,0,1],
+            [1,1,0],
+            [1,0,0],
         ],
         'bottom' : [
             [0,0,0],
-            [0,1,1],
             [1,1,0],
+            [0,1,1],
         ],
         'left' : [
-            [1,0,0],
-            [1,1,0],
+            [0,0,1],
+            [0,1,1],
             [0,1,0],
         ],
     })
@@ -52,6 +52,7 @@ export function zShape() {
         currentShape.value = shape[position.value]
     }
 
+    
     
     return { currentShape, colour, turnRight, turnLeft }
 }
