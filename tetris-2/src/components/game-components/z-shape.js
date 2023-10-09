@@ -7,7 +7,6 @@ export function zShape() {
         'top' : [
             [0,1,1],
             [1,1,0],
-            [0,0,0],
         ],
         'right' : [
             [0,1,0],
@@ -15,7 +14,6 @@ export function zShape() {
             [0,0,1],
         ],
         'bottom' : [
-            [0,0,0],
             [0,1,1],
             [1,1,0],
         ],

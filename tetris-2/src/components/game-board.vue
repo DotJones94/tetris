@@ -13,9 +13,9 @@
     let gameCurrentColumn = ref(5);
     let currentShapeColour = ref('');
 
-    function createEmptyRow(){
+    function createEmptyRow(width){
         let row = [];
-        for(let i = 0; i< gameWidth; i++) 
+        for(let i = 0; i< width; i++) 
             row[i] = 0;
 
         return row;
@@ -26,51 +26,68 @@
     function createBoard(){
         let board = [];
         for(let j = 0; j< gameHeight; j++){
-            board[j] = createEmptyRow();
+            board[j] = createEmptyRow(gameWidth);
         }
         return board;
     }
 
     let gameShapes = [zShape(), tShape(), lShape(), oShape(), sShape(), iShape()];
-    let component = gameShapes[5];
-    currentShapeColour.value = component.colour;
-    let currentGameShape = component.currentShape;
+    let component = null;
+    let currentGameShape = null;
 
     function moveDown(){
         //if we are back at the top, get a random shape
+        if(gameCurrentRow.value === -1){
+            component = gameShapes[Math.floor(Math.random() * gameShapes.length)];
+        }
 
-        console.table(gameBoard.value)
         gameCurrentRow.value++;
 
-        if(gameCurrentRow.value === gameHeight) gameCurrentRow.value = -1
+        if(gameCurrentRow.value === gameHeight) 
+            gameCurrentRow.value = -1;
+        else{
+            if(gameCurrentRow.value > 0) updateBoard(true)
 
-        //Add currentGameShape at currentRow
+            updateBoard(false);
+        }
+    }
+
+    function updateBoard(isClear){
+        console.log(isClear)
+        currentGameShape = component.currentShape.value;
+        currentShapeColour.value = component.colour;
+        const row = isClear ? gameCurrentRow.value - 1 : gameCurrentRow.value;
+
+
         for(let i =0; i < currentGameShape.length; i++){
-            let gameRow = gameBoard.value[gameCurrentRow.value + i];
-            //first half
-            let firstHalf = gameRow.splice(0, gameCurrentColumn.value);
-            let currentShapeRow = currentGameShape[i];
-            //last half 
-            console.log(gameRow.length)
-            console.log('Start point:')
-            console.log( gameCurrentColumn.value+4)
-            console.log('End point:')
-            console.log( gameWidth - parseInt(gameCurrentColumn.value))
-            let lastHalf = gameRow.splice(parseInt(gameCurrentColumn.value)+3, gameWidth - parseInt(gameCurrentColumn.value));
-            console.log(lastHalf)
-            let newRow = firstHalf.concat(currentShapeRow, lastHalf);
-            gameBoard.value[gameCurrentRow.value + i] = newRow;
+            let currentShapeRow = []
+            if(isClear)  currentShapeRow = createEmptyRow(currentGameShape[i].length);
+            else currentShapeRow = currentGameShape[i];
+
+            console.log(currentShapeRow)
+            
+            let clonedArray = gameBoard.value[row + i].slice(0); //To make sure we are not modifying orignal row
+            let firstHalf = clonedArray.splice(0, gameCurrentColumn.value);
+            let lastHalf = gameBoard.value[row + i].splice(parseInt(gameCurrentColumn.value)+currentShapeRow.length, gameWidth);
+
+            gameBoard.value[row + i] = firstHalf.concat(currentShapeRow, lastHalf);
         }
     }
 
     function turnRight(){
-        component.turnRight();
-        currentGameShape = component.currentShape;
+        if(gameCurrentRow.value > 0){
+            updateBoard(true)
+            component.turnRight();
+            updateBoard(false);
+        }
     }
 
     function turnLeft(){
-        component.turnLeft();
-        currentGameShape = component.currentShape;
+        if(gameCurrentRow.value > 0){
+            updateBoard(true)
+            component.turnLeft();
+            updateBoard(false);
+        }
     }
     
 </script>
@@ -80,14 +97,14 @@
         Welcome to Tetris <br> Current Row {{ gameCurrentRow }} <br> Current Column {{ gameCurrentColumn }}
 
         <!-- Shape -->
-        <div class="board">
+        <!-- <div class="board">
             <div v-for="(row, indexRow) in currentGameShape" :key="indexRow" class="row">
                 <div v-for="(column, indexColumn) in row" :key="indexColumn" class="column" 
                 :style="[(column === 1) ? { backgroundColor : currentShapeColour } : { backgroundColor : 'white' }]"
                 :class="{'column--colour' : (column === 1)}">
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Controls -->
         <div class="controls">
